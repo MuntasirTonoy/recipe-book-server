@@ -50,7 +50,7 @@ async function run() {
       const result = await recipeCollection.findOne({
         _id: new ObjectId(req.params.id),
       });
-      res.send(result);
+      res.send();
     });
 
     // UPDATE DATA
@@ -67,7 +67,7 @@ async function run() {
         updatedDoc,
         option
       );
-      res.send();
+      res.send(result);
     });
 
     // Send a ping to confirm a successful connection
