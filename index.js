@@ -53,6 +53,22 @@ async function run() {
       res.send(result);
     });
 
+    // UPDATE DATA
+    app.put("/recipes/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const option = { upsert: true };
+      const updateData = req.body;
+      const updatedDoc = {
+        $set: updateData,
+      };
+      const result = await recipeCollection.updateOne(
+        query,
+        updatedDoc,
+        option
+      );
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
