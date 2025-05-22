@@ -50,7 +50,7 @@ async function run() {
       const result = await recipeCollection.findOne({
         _id: new ObjectId(req.params.id),
       });
-      res.send();
+      res.send(result);
     });
 
     // UPDATE DATA
