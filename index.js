@@ -67,6 +67,7 @@ async function run() {
         updatedDoc,
         option
       );
+      res.send();
     });
 
     // Send a ping to confirm a successful connection
