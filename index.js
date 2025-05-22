@@ -8,7 +8,6 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@emporiumc1.k1lbefa.mongodb.net/?retryWrites=true&w=majority&appName=EmporiumC1`;
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@recipes.zx59asa.mongodb.net/?retryWrites=true&w=majority&appName=recipes`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
