@@ -53,31 +53,6 @@ async function run() {
       res.send(result);
     });
 
-    // UPDATE DATA
-    app.put("/recipes/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const option = { upsert: true };
-      const updateData = req.body;
-      const updatedDoc = {
-        $set: updateData,
-      };
-      const result = await recipeCollection.updateOne(
-        query,
-        updatedDoc,
-        option
-      );
-      res.send(result);
-    });
-
-    // FIND SPECIFIC  DATA BY IT'S ID AND DELETE IT
-    app.delete("/recipes/:id", async (req, res) => {
-      const result = await recipeCollection.deleteOne({
-        _id: new ObjectId(req.params.id),
-      });
-      res.send(result);
-    });
-
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
