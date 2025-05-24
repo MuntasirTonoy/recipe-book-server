@@ -22,7 +22,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const recipeCollection = client.db("recipeDB").collection("recipes");
 
@@ -36,6 +36,45 @@ async function run() {
       const newRecipe = req.body;
       const result = await recipeCollection.insertOne(newRecipe);
       res.send(result);
+    });
+
+    app.patch("/recipes/like/:id", async (req, res) => {
+      const id = req.params?.id;
+      const userid = req.body.userid;
+      let likeStatus = "";
+      const recipe = await recipeCollection.findOne({
+        _id: new ObjectId(id),
+      });
+      const isLiked = recipe?.likers.find((liker) => liker === userid);
+      if (isLiked) {
+        const index = recipe?.likers.indexOf(userid);
+        recipe?.likers.splice(index, 1);
+        recipeCollection.updateOne(
+          {
+            _id: new ObjectId(id),
+          },
+          {
+            $set: {
+              likers: recipe.likers,
+            },
+          }
+        );
+
+        likeStatus = "unliked";
+      } else {
+        recipeCollection.updateOne(
+          {
+            _id: new ObjectId(id),
+          },
+          {
+            $set: {
+              likers: [...recipe.likers, userid],
+            },
+          }
+        );
+        likeStatus = "liked";
+      }
+      res.send({ success: true, message: "like updated", likeStatus });
     });
 
     // LOAD ALL  COLLECTION   DATA
@@ -78,10 +117,10 @@ async function run() {
     });
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
+    // await client.db("admin").command({ ping: 1 });
+    // console.log(
+    //   "Pinged your deployment. You successfully connected to MongoDB!"
+    // );
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
